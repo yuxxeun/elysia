@@ -1,0 +1,32 @@
+---
+const response = await fetch('http://localhost:4321/api/v1/surah');
+let surahList = [];
+try {
+  const data = await response.json();
+  if (data.surahs && Array.isArray(data.surahs)) {
+    surahList = data.surahs;
+  } else {
+    throw new Error("Data surahs is not an array or missing");
+  }
+} catch (error) {
+  console.error("Failed to fetch surah data:", error);
+  surahList = [];
+}
+---
+    <main>
+        <h1>Daftar Surah</h1>
+        {surahList.length > 0 ? (
+            <ul>
+                {surahList.map(surah => (
+                    <li :key={surah.number} class="mb-5 bg-zinc-500 max-w-2xl">
+                        <h2>{surah.name}</h2>
+                        <p>Nomor: {surah.number}</p>
+                        <p>Jumlah Ayat: {surah.verses}</p>
+                    </li>
+                ))}
+            </ul>
+        ) : (
+            <p>Gagal memuat data surah atau data tidak tersedia.</p>
+        )}
+    </main>
+
